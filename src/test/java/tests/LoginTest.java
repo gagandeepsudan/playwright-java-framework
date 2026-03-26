@@ -25,9 +25,13 @@ public class LoginTest {
         /*Setup*/
         //call Playwright
         playwright = Playwright.create();
+        // Read HEADLESS environment variable — CI sets it to true
+        // Locally it's not set, so defaults to false (visible browser)
+        boolean isHeadless= Boolean.parseBoolean(System
+                .getenv().getOrDefault("HEADLESS", "false"));
         //open Browser
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
-                .setHeadless(false));
+                .setHeadless(isHeadless));
         //open newpage
         page = browser.newPage();
         loginPage = new LoginPage(page);
