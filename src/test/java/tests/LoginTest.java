@@ -2,6 +2,7 @@ package tests;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.AriaRole;
+import config.PlaywrightConfig;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -9,6 +10,7 @@ import org.testng.annotations.Test;
 import pages.CartPage;
 import pages.InventoryPage;
 import pages.LoginPage;
+import com.microsoft.playwright.BrowserContext;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -25,15 +27,18 @@ public class LoginTest {
         /*Setup*/
         //call Playwright
         playwright = Playwright.create();
-        // Read HEADLESS environment variable — CI sets it to true
-        // Locally it's not set, so defaults to false (visible browser)
-        boolean isHeadless= Boolean.parseBoolean(System
-                .getenv().getOrDefault("HEADLESS", "false"));
+//        // Read HEADLESS environment variable — CI sets it to true
+//        // Locally it's not set, so defaults to false (visible browser)
+//        boolean isHeadless= Boolean.parseBoolean(System
+//                .getenv().getOrDefault("HEADLESS", "false"));
         //open Browser
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
-                .setHeadless(isHeadless));
+//        browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
+//                .setHeadless(isHeadless));
+        browser= PlaywrightConfig.createBrowser(playwright);
+        BrowserContext context = browser.newContext(PlaywrightConfig.contextOptions());
         //open newpage
-        page = browser.newPage();
+//        page = browser.newPage();
+        page = context.newPage();
         loginPage = new LoginPage(page);
         inventoryPage = new InventoryPage(page);
         cartPage= new CartPage(page);
