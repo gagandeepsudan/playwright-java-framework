@@ -22,8 +22,7 @@ public class InventoryPage {
         return page.locator(".inventory_item").count();
     }
     public void addToCart(String productName){
-//     page.getByText(productName).locator("add-to-cart-sauce-labs-bolt-t-shirt").getByText("Add to cart").click();
-       String dataTestId = "add-to-cart-" + productName.toLowerCase()
+     String dataTestId = "add-to-cart-" + productName.toLowerCase()
                .replace(" ", "-");
        page.locator("[data-test=\"" + dataTestId + "\"]").click();
     }

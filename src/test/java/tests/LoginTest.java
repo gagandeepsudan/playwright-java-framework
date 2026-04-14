@@ -24,20 +24,12 @@ public class LoginTest {
 
     @BeforeMethod
     public void setup() {
-        /*Setup*/
-        //call Playwright
+
         playwright = Playwright.create();
-//        // Read HEADLESS environment variable — CI sets it to true
-//        // Locally it's not set, so defaults to false (visible browser)
-//        boolean isHeadless= Boolean.parseBoolean(System
-//                .getenv().getOrDefault("HEADLESS", "false"));
-        //open Browser
-//        browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
-//                .setHeadless(isHeadless));
+
         browser= PlaywrightConfig.createBrowser(playwright);
         BrowserContext context = browser.newContext(PlaywrightConfig.contextOptions());
-        //open newpage
-//        page = browser.newPage();
+
         page = context.newPage();
         loginPage = new LoginPage(page);
         inventoryPage = new InventoryPage(page);
@@ -49,11 +41,9 @@ public class LoginTest {
     @Test
             public void validateLogin() {
         loginPage.loginAs("standard_user","secret_sauce");
-
-        /*Assert URL and Item*/
         Assert.assertTrue(inventoryPage.verifyCorrectUrlIsLoaded());
 
-        /*Assert Item*/
+
 
         inventoryPage.assertProductIsVisible();
     }
@@ -84,7 +74,7 @@ public class LoginTest {
 
     @AfterMethod
             public void teardown() {
-        //teardown
+
         browser.close();
         playwright.close();
 
