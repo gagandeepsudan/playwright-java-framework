@@ -1,7 +1,7 @@
 package tests;
 
 import com.microsoft.playwright.*;
-import com.microsoft.playwright.options.AriaRole;
+
 import config.PlaywrightConfig;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -51,7 +51,7 @@ public class LoginTest {
         loginPage.loginAs("standard_user","secret_sauce");
 
         /*Assert URL and Item*/
-        Assert.assertTrue(inventoryPage.verifyUrl());
+        Assert.assertTrue(inventoryPage.verifyCorrectUrlIsLoaded());
 
         /*Assert Item*/
 
@@ -72,6 +72,16 @@ public class LoginTest {
         cartPage.assertProductInCart("Sauce Labs Bolt T-Shirt");
 
     }
+    @Test
+    public void inventoryPageLoadswith6Products(){
+        loginPage.loginAs("standard_user", "secret_sauce");
+        System.out.println("URL is: " + page.url());
+        System.out.println("Count is: " + inventoryPage.getProductCount());
+        Assert.assertTrue(inventoryPage.verifyCorrectUrlIsLoaded());
+
+        Assert.assertEquals(inventoryPage.getProductCount(),6);
+    }
+
     @AfterMethod
             public void teardown() {
         //teardown

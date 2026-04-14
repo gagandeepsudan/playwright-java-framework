@@ -9,11 +9,17 @@ public class InventoryPage {
     public InventoryPage(Page page){
         this.page= page;
     }
-    public boolean verifyUrl(){
+    public boolean verifyCorrectUrlIsLoaded(){
         return page.url().contains("inventory.html");
     }
+
     public void assertProductIsVisible(){
+
         assertThat(page.getByText("Products")).isVisible();
+    }
+
+    public int getProductCount(){
+        return page.locator(".inventory_item").count();
     }
     public void addToCart(String productName){
 //     page.getByText(productName).locator("add-to-cart-sauce-labs-bolt-t-shirt").getByText("Add to cart").click();
