@@ -18,7 +18,12 @@ covering:
 - TestNG — test runner
 - Maven — dependency management
 - Page Object Model — framework structure
-- GitHub Actions — CI pipeline (coming soon)
+- GitHub Actions —CI pipeline (tests run automatically on every push)
+
+## CI Status
+
+Tests run automatically on every push via GitHub Actions.
+[View latest CI runs](https://github.com/gagandeepsudan/playwright-java-framework/actions)
 
 ## Project structure
 
@@ -31,6 +36,8 @@ src/test/java/
 └── LoginTest.java
 
 ## How to run locally
+
+**Prerequisites:** Java 23, Maven 3.x
 
 1. Clone the repo:
    git clone https://github.com/gagandeepsudan/playwright-java-framework.git
