@@ -25,5 +25,5 @@ jobs:
 
       - name: Run tests
         env:
-          HEADLESS: true
+          HEADLESS: false
         run: mvn test
