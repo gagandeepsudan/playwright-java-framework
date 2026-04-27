@@ -8,8 +8,10 @@ using Page Object Model, TestNG, and GitHub Actions CI.
 Automated end-to-end tests for [Saucedemo](https://www.saucedemo.com)
 covering:
 - User login (valid credentials)
-- Locked out user error message
-- Add product to cart and verify cart contents
+- Locked out user cannot login (error message verified)
+- Add product to cart and verify cart badge count
+- Full checkout flow — enter details, complete order, confirm
+- Checkout blocked when First Name is missing (error message verified)
 
 ## Tech stack
 
@@ -31,9 +33,13 @@ src/test/java/
 ├── pages/
 │   ├── LoginPage.java
 │   ├── InventoryPage.java
-│   └── CartPage.java
+│   ├── CartPage.java
+│   ├── CheckoutStepOnePage.java
+│   ├── CheckoutStepTwoPage.java
+│   └── ConfirmationPage.java
 └── tests/
-└── LoginTest.java
+├── LoginTest.java
+└── CheckoutFlowTest.java
 
 ## How to run locally
 
@@ -47,3 +53,22 @@ src/test/java/
 
 3. Run the tests:
    mvn test
+## AI-assisted test generation
+
+The checkout flow tests were generated using Claude as an AI
+assistant, based on a structured prompt with user story,
+acceptance criteria, and negative scenarios.
+
+Prompt approach used:
+- Defined the application URL and credentials
+- Listed 6 acceptance criteria
+- Specified 2 negative scenarios
+- Set technical constraints (POM, TestNG, assertThat, no Thread.sleep)
+
+What was changed after generation:
+- Used InventoryPage instead of a new ProductsPage
+  to avoid duplication
+- Kept existing negative login test in LoginTest
+  rather than duplicating it
+- Retained all existing methods in InventoryPage
+  and added only what was missing

@@ -22,6 +22,8 @@ public class LoginTest {
     InventoryPage inventoryPage;
     CartPage cartPage;
 
+
+
     @BeforeMethod
     public void setup() {
 
@@ -45,7 +47,7 @@ public class LoginTest {
 
 
 
-        inventoryPage.assertProductIsVisible();
+        inventoryPage.verifyProductIsVisible();
     }
     @Test
     public void LockedOutValidationError(){
@@ -59,7 +61,7 @@ public class LoginTest {
         inventoryPage.addToCart("Sauce Labs Bolt T-Shirt");
         inventoryPage.goToCart();
         Assert.assertTrue(cartPage.validatePage());
-        cartPage.assertProductInCart("Sauce Labs Bolt T-Shirt");
+        cartPage.verifyProductInCart("Sauce Labs Bolt T-Shirt");
 
     }
     @Test
