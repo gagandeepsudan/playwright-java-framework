@@ -53,6 +53,7 @@ src/test/java/
 
 3. Run the tests:
    mvn test
+
 ## AI-assisted test generation
 
 The checkout flow tests were generated using Claude as an AI
@@ -72,3 +73,50 @@ What was changed after generation:
   rather than duplicating it
 - Retained all existing methods in InventoryPage
   and added only what was missing
+
+## Engineering Decisions
+
+### Why @BeforeClass instead of @BeforeMethod?
+`@BeforeClass` is used because the checkout tests are dependent
+on each other and need to share the same browser session and
+application state. If `@BeforeMethod` ran before every test,
+it would reopen the browser and reset the state each time,
+causing dependent tests to fail because the previous steps
+in the checkout flow would be lost.
+
+### Risk of dependsOnMethods
+If `testSuccessfulLogin` fails, tests 2–6 will be skipped
+by TestNG because of `dependsOnMethods`. This is a risk because
+the test report may show multiple skipped tests without confirming
+whether those functionalities actually work or fail independently,
+which can reduce visibility for the team and make defect analysis
+harder.
+
+### Credential storage
+Credentials are currently hardcoded for portfolio purposes.
+In a production framework the better approach would be to store
+them in a `.properties` or `.env` file excluded from version
+control via `.gitignore`, or use GitHub Actions secrets for
+CI pipelines.
+
+### CI/CD lesson learned
+Tests passed locally but failed in CI because local runs use
+a headed browser while CI environments are headless. Fixed by
+setting `setHeadless(true)` in the browser launch options.
+This is a common real-world CI/CD issue in test automation.
+
+### What I would add next
+- Move credentials to a config file or GitHub Actions secrets
+- Add @DataProvider for data-driven login tests
+- Add payment failure negative scenario
+- Add session timeout scenario
+
+### Assertion resilience
+Using `hasText()` with an exact string is brittle because the
+test can fail due to small UI text changes such as extra spaces,
+punctuation, capitalisation, or minor wording updates — even
+when the functionality still works correctly. A more resilient
+approach is `containsText()` which validates only the important
+part of the message:
+java
+assertThat(page.locator(CONFIRMATION_HEADER)).containsText("Thank you");

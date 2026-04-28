@@ -14,6 +14,6 @@ public class ConfirmationPage {
 
     public void verifyOrderConfirmation() {
         assertThat(page.locator(CONFIRMATION_HEADER))
-                .hasText("Thank you for your order!");
+                .containsText("Thank you for your order!");
     }
 }

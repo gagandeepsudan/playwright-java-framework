@@ -17,6 +17,10 @@ public class CheckoutFlowTest {
     private CheckoutStepTwoPage checkoutStepTwoPage;
     private ConfirmationPage confirmationPage;
 
+    private final String VALID_EMAIL = "standard_user";
+    private final String VALID_PASSWORD = "secret_sauce";
+
+
     @BeforeClass
     public void setUp() {
         playwright = Playwright.create();
@@ -44,7 +48,7 @@ public class CheckoutFlowTest {
     @Test(priority = 1)
     public void testSuccessfulLogin() {
         loginPage.navigate();
-        loginPage.loginAs("standard_user", "secret_sauce");
+        loginPage.loginAs(VALID_EMAIL, VALID_PASSWORD);
         page.waitForURL("**/inventory.html");
     }
 
