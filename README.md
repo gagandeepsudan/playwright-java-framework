@@ -12,6 +12,10 @@ covering:
 - Add product to cart and verify cart badge count
 - Full checkout flow — enter details, complete order, confirm
 - Checkout blocked when First Name is missing (error message verified)
+- End-to-end checkout flow — login, add to cart,
+    checkout, confirmation
+- API tests — status code, response body,
+  and schema validation against reqres.in
 
 ## Tech stack
 
@@ -39,7 +43,11 @@ src/test/java/
 │   └── ConfirmationPage.java
 └── tests/
 ├── LoginTest.java
-└── CheckoutFlowTest.java
+├── CheckoutFlowTest.java
+└── ApiTest.java
+├── config/
+│   └── PlaywrightConfig.java
+
 
 ## How to run locally
 
