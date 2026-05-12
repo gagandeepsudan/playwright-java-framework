@@ -4,6 +4,7 @@ import com.microsoft.playwright.APIRequest;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.Playwright;
+import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -36,9 +37,23 @@ public class ApiTest {
     public void getSingleUserReturns200(){
         APIResponse response = request.get("/api/users/2");
         Assert.assertEquals(response.status(), 200);
-        String body = response.text();
-        Assert.assertTrue(body.contains("\"id\":2"), "Body should contain user id 2");
-    }
+        //Parse the body as JSON
+        JSONObject body = new JSONObject(response.text());
+        JSONObject data = body.getJSONObject("data");
+        //Schema validation-field existence and types
+        Assert.assertTrue(data.has("id") ,"id field must exist ");
+        Assert.assertTrue(data.has("email") ,"email field must exist");
+        Assert.assertTrue(data.has("first_name"),"first_name field must exist");
+        Assert.assertTrue(data.has("last_name"),"last_name field must exist");
+
+        //Type checks
+        Assert.assertTrue(data.get("id") instanceof Integer, "id must be an integer");
+        Assert.assertTrue(data.get("email") instanceof String, "email must be a string");
+
+        //No Nulls on required fields
+        Assert.assertFalse(data.isNull("email"),"email field must not be null");
+        Assert.assertFalse(data.isNull("first_name"),"first_name field must not be null");
+        }
     @Test
     public void getMissingUsersReturns404(){
         APIResponse response = request.get("/api/users/999");
