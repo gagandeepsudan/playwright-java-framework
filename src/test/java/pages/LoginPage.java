@@ -26,5 +26,8 @@ public class LoginPage {
         enterPassword(password);
         clickLogin();
     }
+    public boolean isErrorDisplayed(){
+        return page.locator("[data-test='error-button']").isVisible() ;
+    }
 
 }

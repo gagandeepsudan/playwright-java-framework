@@ -3,14 +3,17 @@ package tests;
 import com.microsoft.playwright.*;
 
 import config.PlaywrightConfig;
-import org.testng.Assert;
+
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.CartPage;
 import pages.InventoryPage;
 import pages.LoginPage;
 import com.microsoft.playwright.BrowserContext;
+
+import java.util.regex.Pattern;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -21,6 +24,7 @@ public class LoginTest {
     LoginPage loginPage;
     InventoryPage inventoryPage;
     CartPage cartPage;
+    BrowserContext context;
 
 
 
@@ -30,7 +34,7 @@ public class LoginTest {
         playwright = Playwright.create();
 
         browser= PlaywrightConfig.createBrowser(playwright);
-        BrowserContext context = browser.newContext(PlaywrightConfig.contextOptions());
+        context = browser.newContext(PlaywrightConfig.contextOptions());
 
         page = context.newPage();
         loginPage = new LoginPage(page);
@@ -40,14 +44,27 @@ public class LoginTest {
 
 
     }
-    @Test
-            public void validateLogin() {
-        loginPage.loginAs("standard_user","secret_sauce");
-        Assert.assertTrue(inventoryPage.verifyCorrectUrlIsLoaded());
+    @DataProvider(name = "loginData")
+    public Object[][] loginDataProvider() {
+        return new Object[][]{
+                {"standard_user", "secret_sauce", true},
+                {"locked_out_user", "secret_sauce", false},
+                {"invalid_user", "secret_sauce", false},
+        };
+    }
 
-
-
-        inventoryPage.verifyProductIsVisible();
+    @Test (dataProvider = "loginData")
+            public void validateLogin(String username, String password,boolean shouldSucceed) {
+        loginPage.loginAs(username, password);
+        if(shouldSucceed)
+        {
+            assertThat(page).hasURL(Pattern.compile(".*inventory.html"));
+            assertThat(page.locator(".inventory_item")).isVisible();
+        }
+        else
+        {
+            assertThat(page.getByText("Epic sadface")).isVisible();
+        }
     }
     @Test
     public void LockedOutValidationError(){
@@ -60,7 +77,7 @@ public class LoginTest {
         loginPage.loginAs("standard_user", "secret_sauce");
         inventoryPage.addToCart("Sauce Labs Bolt T-Shirt");
         inventoryPage.goToCart();
-        Assert.assertTrue(cartPage.validatePage());
+        assertThat(page).hasURL(Pattern.compile(".*cart.html"));
         cartPage.verifyProductInCart("Sauce Labs Bolt T-Shirt");
 
     }
@@ -69,14 +86,14 @@ public class LoginTest {
         loginPage.loginAs("standard_user", "secret_sauce");
         System.out.println("URL is: " + page.url());
         System.out.println("Count is: " + inventoryPage.getProductCount());
-        Assert.assertTrue(inventoryPage.verifyCorrectUrlIsLoaded());
-
-        Assert.assertEquals(inventoryPage.getProductCount(),6);
+       assertThat(page).hasURL(Pattern.compile(".*inventory.html"));
+        assertThat(page.locator(".inventory_item")).hasCount(6);
     }
 
     @AfterMethod
-            public void teardown() {
-
+    public void teardown() {
+        page.close();
+        context.close();
         browser.close();
         playwright.close();
 
