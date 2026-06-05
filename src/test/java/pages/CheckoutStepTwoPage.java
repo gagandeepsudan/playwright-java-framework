@@ -1,17 +1,19 @@
 package pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
-public class CheckoutStepTwoPage {
+public class CheckoutStepTwoPage extends BasePage {
 
-    private final Page page;
-    private final String FINISH_BTN = "[data-test='finish']";
+
+    private final Locator FINISH_BTN;
 
     public CheckoutStepTwoPage(Page page) {
-        this.page = page;
+        super(page);
+        this.FINISH_BTN= page.locator("[data-test='finish']");
     }
 
     public void completeOrder() {
-        page.click(FINISH_BTN);
+        FINISH_BTN.click();
     }
 }

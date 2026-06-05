@@ -1,19 +1,19 @@
 package pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class ConfirmationPage {
-
-    private final Page page;
-    private final String CONFIRMATION_HEADER = ".complete-header";
+public class ConfirmationPage extends BasePage {
+    private final Locator CONFIRMATION_HEADER;
 
     public ConfirmationPage(Page page) {
-        this.page = page;
+        super(page);
+        this.CONFIRMATION_HEADER= page.locator(".complete-header");
     }
 
     public void verifyOrderConfirmation() {
-        assertThat(page.locator(CONFIRMATION_HEADER))
+        assertThat(CONFIRMATION_HEADER)
                 .containsText("Thank you for your order!");
     }
 }

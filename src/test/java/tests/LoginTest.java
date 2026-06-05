@@ -59,7 +59,7 @@ public class LoginTest {
         if(shouldSucceed)
         {
             assertThat(page).hasURL(Pattern.compile(".*inventory.html"));
-            assertThat(page.locator(".inventory_item").first()).isVisible();
+            assertThat(page.getByText("Products")).isVisible();
         }
         else
         {

@@ -1,47 +1,47 @@
 package pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class InventoryPage {
+public class InventoryPage extends BasePage{
+    private final Locator inventoryItems;
 
-    private final Page page;
-    private final String ADD_TO_CART_BTN = "[data-test='add-to-cart-sauce-labs-backpack']";
-    private final String CART_BADGE      = ".shopping_cart_badge";
-    private final String CART_ICON       = ".shopping_cart_link";
+    private final Locator ADD_TO_CART_BTN;
+    private final Locator cartButton;
+    private final Locator CART_ICON;
 
     public InventoryPage(Page page) {
-        this.page = page;
-    }
+        super(page);
+        this.inventoryItems= page.locator(".inventory_item");
+        this.CART_ICON=page.locator(".shopping_cart_link");
+        this.cartButton=page.locator(".shopping_cart_badge");
+        this.ADD_TO_CART_BTN= page.locator("[data-test^='add-to-cart-']").first();
 
-    public boolean verifyCorrectUrlIsLoaded() {
-        return page.url().contains("inventory.html");
-    }
 
-    public void verifyProductIsVisible() {
-        assertThat(page.getByText("Products")).isVisible();
     }
 
     public int getProductCount() {
-        return page.locator(".inventory_item").count();
+        return inventoryItems.count();
     }
 
     public void addToCart(String productName) {
-        String dataTestId = "add-to-cart-" + productName.toLowerCase()
-                .replace(" ", "-");
-        page.locator("[data-test='" + dataTestId + "']").click();
+        page.getByText(productName)
+                .locator("xpath=ancestor::div[@class='inventory_item']")
+                .getByText("Add to cart")
+                .click();
     }
 
     public void addFirstProductToCart() {
-        page.click(ADD_TO_CART_BTN);
+        ADD_TO_CART_BTN.click();
     }
 
-    // ✅ ADDED — was in ProductsPage, missing from InventoryPage
+     // ADDED — was in ProductsPage, missing from InventoryPage
     public void verifyCartBadgeCount(String expectedCount) {
-        assertThat(page.locator(CART_BADGE)).hasText(expectedCount);
+        assertThat(cartButton).hasText(expectedCount);
     }
 
     public void goToCart() {
-        page.click(CART_ICON);
+        CART_ICON.click();
     }
 }
