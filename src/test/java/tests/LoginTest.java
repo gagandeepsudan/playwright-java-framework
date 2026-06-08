@@ -4,10 +4,7 @@ import com.microsoft.playwright.*;
 
 import config.PlaywrightConfig;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.CartPage;
 import pages.InventoryPage;
 import pages.LoginPage;
@@ -18,22 +15,25 @@ import java.util.regex.Pattern;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class LoginTest {
-    Playwright playwright;
-    Browser browser;
+    static Playwright playwright;
+    static Browser browser;
     Page page;
     LoginPage loginPage;
     InventoryPage inventoryPage;
     CartPage cartPage;
     BrowserContext context;
+    @BeforeClass
+    public static void launchBrowser() {
+        playwright = Playwright.create();
 
+        browser= PlaywrightConfig.createBrowser(playwright);
+    }
 
 
     @BeforeMethod
     public void setup() {
 
-        playwright = Playwright.create();
 
-        browser= PlaywrightConfig.createBrowser(playwright);
         context = browser.newContext(PlaywrightConfig.contextOptions());
 
         page = context.newPage();
@@ -63,11 +63,11 @@ public class LoginTest {
         }
         else
         {
-            assertThat(page.getByText("Epic sadface")).isVisible();
+            assertThat(page.locator("[data-test='error-button']")).isVisible();
         }
     }
     @Test
-    public void LockedOutValidationError(){
+    public void lockedOutValidationError(){
         loginPage.loginAs("locked_out_user", "secret_sauce");
   assertThat(page.getByText("Epic sadface: Sorry, this user has been locked out.")).isVisible();
     }
@@ -84,8 +84,6 @@ public class LoginTest {
     @Test
     public void inventoryPageLoadswith6Products(){
         loginPage.loginAs("standard_user", "secret_sauce");
-        System.out.println("URL is: " + page.url());
-        System.out.println("Count is: " + inventoryPage.getProductCount());
        assertThat(page).hasURL(Pattern.compile(".*inventory.html"));
         assertThat(page.locator(".inventory_item")).hasCount(6);
     }
@@ -94,8 +92,11 @@ public class LoginTest {
     public void teardown() {
         page.close();
         context.close();
+    }
+
+    @AfterClass
+    public static void closeBrowser() {
         browser.close();
         playwright.close();
-
     }
 }

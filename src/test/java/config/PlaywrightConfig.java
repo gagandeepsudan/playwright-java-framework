@@ -7,12 +7,15 @@ import com.microsoft.playwright.Playwright;
 public class PlaywrightConfig {
     public static Browser createBrowser(Playwright playwright){
         boolean isHeadless = Boolean.parseBoolean(
-                System.getenv().getOrDefault("HEADLESS", "false")
+                System.getProperty("headless", "true")
+        );
+        int slowMo = Integer.parseInt(
+                System.getProperty("slowMo", "0")
         );
         return playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
                         .setHeadless(isHeadless)
-                        .setSlowMo(500)
+                        .setSlowMo(slowMo)
         );
     }
     public static Browser.NewContextOptions contextOptions(){
