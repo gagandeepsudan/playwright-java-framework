@@ -14,6 +14,7 @@ covering:
 - Checkout blocked when First Name is missing (error message verified)
 - End-to-end checkout flow — login, add to cart,
     checkout, confirmation
+- Inventory sort — A-Z, Z-A, price low-to-high, price high-to-low
 - API tests — status code, response body,
   and schema validation against reqres.in
 
@@ -44,6 +45,7 @@ src/test/java/
 └── tests/
 ├── LoginTest.java
 ├── CheckoutFlowTest.java
+├── InventoryTest.java
 └── ApiTest.java
 ├── config/
 │   └── PlaywrightConfig.java
@@ -51,7 +53,7 @@ src/test/java/
 
 ## How to run locally
 
-**Prerequisites:** Java 23, Maven 3.x
+**Prerequisites:** Java 21, Maven 3.x
 
 1. Clone the repo:
    git clone https://github.com/gagandeepsudan/playwright-java-framework.git
@@ -115,7 +117,6 @@ This is a common real-world CI/CD issue in test automation.
 
 ### What I would add next
 - Move credentials to a config file or GitHub Actions secrets
-- Add @DataProvider for data-driven login tests
 - Add payment failure negative scenario
 - Add session timeout scenario
 
