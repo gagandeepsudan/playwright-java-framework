@@ -43,7 +43,7 @@ pom.xml
 | Class | Responsibility |
 |---|---|
 | `LoginPage` | Username/password fields, login button, error message |
-| `InventoryPage` | Product listing, add-to-cart, cart icon badge |
+| `InventoryPage` | Product listing, add-to-cart, cart icon badge, sort dropdown |
 | `CartPage` | Cart item list, checkout button |
 | `CheckoutStepOnePage` | Buyer info form (first name, last name, postcode) |
 | `CheckoutStepTwoPage` | Order summary, finish button |
@@ -66,6 +66,7 @@ pom.xml
 |---|---|
 | `LoginTest` | Valid login, invalid credentials (data-driven via `@DataProvider`) |
 | `CheckoutFlowTest` | End-to-end: login → add to cart → checkout → confirmation |
+| `InventoryTest` | Sort dropdown: A-Z, Z-A, price low-to-high, price high-to-low |
 | `ApiTest` | REST API tests against reqres.in: GET/POST, status codes, JSON schema validation |
 
 **Test conventions:**
@@ -87,7 +88,7 @@ pom.xml
 ## CI/CD — GitHub Actions
 
 - Trigger: push and pull request to `main`
-- Java version: 11 (explicitly set — resolves past version mismatch issues)
+- Java version: 21 (explicitly set — resolves past version mismatch issues)
 - Browser: Chromium headless
 - Key historical issue: required `playwright install` step before test run
 
