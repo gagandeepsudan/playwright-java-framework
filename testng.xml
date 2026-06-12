@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Playwright Test Suite" parallel="methods" thread-count="2">
+    <test name="Login Tests">
+        <classes>
+            <class name="tests.ApiTest">
+            <methods><include name="getUsersReturns200"/>
+                <include name="getSingleUserReturns200"/>
+                <include name="getMissingUsersReturns404"/></methods>
+        </class>
+        </classes>
+            </test>
+
+            <test name="Checkout Tests">
+                <classes>
+            <class name="tests.CheckoutFlowTest">
+            <methods><include name="testSuccessfulLogin"/>
+                <include name="testAddProductToCart"/>
+                <include name="testVerifyCartAndProceedToCheckout"/>
+                <include name="testEnterCheckoutDetails"/>
+                <include name="testCompleteOrder"/>
+                <include name="testOrderConfirmationDisplayed"/>
+                <include name="testLockedOutUserCannotLogin"/>
+                <include name="testCheckoutWithoutFirstNameShowsError"/>
+            </methods>
+        </class>
+                </classes>
+            </test>
+                <test name="Inventory Tests">
+                    <classes>
+            <class name="tests.LoginTest">
+            <methods><include name="validateLogin"/>
+                <include name="LockedOutValidationError"/>
+                <include name="userCanAddItemToCart"/>
+                <include name="inventoryPageLoadswith6Products"/>
+        </methods>
+        </class>
+                </classes>
+                </test>
+                <test name="Inventory Sort Tests">
+                    <classes>
+                        <class name="tests.InventoryTest">
+                            <methods>
+                                <include name="sortAtoZ"/>
+                                <include name="sortZtoA"/>
+                                <include name="sortPriceLowToHigh"/>
+                                <include name="sortPriceHighToLow"/>
+                            </methods>
+                        </class>
+                    </classes>
+                </test>
+</suite>

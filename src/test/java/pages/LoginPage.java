@@ -16,16 +16,7 @@ public class LoginPage extends BasePage {
     public void navigate(){
         navigateTo("https://www.saucedemo.com/");
     }
-//    public void enterUsername(String username){
-//        page.getByPlaceholder("Username").fill(username);
-//    }
-//    public void enterPassword(String password){
-//        page.getByPlaceholder("Password").fill(password);
-//    }
-//    public void clickLogin(){
-//     page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions()
-//             .setName("Login")).click();
-//    }
+
     public void loginAs(String username, String password){
         usernameField.fill(username);
         passwordField.fill(password);

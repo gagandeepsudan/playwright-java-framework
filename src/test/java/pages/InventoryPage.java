@@ -2,6 +2,10 @@ package pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class InventoryPage extends BasePage{
@@ -10,6 +14,9 @@ public class InventoryPage extends BasePage{
     private final Locator ADD_TO_CART_BTN;
     private final Locator cartButton;
     private final Locator CART_ICON;
+    private final Locator sortDropdown;
+    private final Locator productNames;
+    private final Locator productPrices;
 
     public InventoryPage(Page page) {
         super(page);
@@ -17,7 +24,9 @@ public class InventoryPage extends BasePage{
         this.CART_ICON=page.locator(".shopping_cart_link");
         this.cartButton=page.locator(".shopping_cart_badge");
         this.ADD_TO_CART_BTN= page.locator("[data-test^='add-to-cart-']").first();
-
+        this.sortDropdown = page.locator(".product_sort_container");
+        this.productNames = page.locator(".inventory_item_name");
+        this.productPrices = page.locator(".inventory_item_price");
 
     }
 
@@ -43,5 +52,19 @@ public class InventoryPage extends BasePage{
 
     public void goToCart() {
         CART_ICON.click();
+    }
+
+    public void sortBy(String sortOption) {
+        sortDropdown.selectOption(sortOption);
+    }
+
+    public List<String> getProductNames() {
+        return productNames.allTextContents();
+    }
+
+    public List<Double> getProductPrices() {
+        return productPrices.allTextContents().stream()
+                .map(p -> Double.parseDouble(p.replace("$", "")))
+                .collect(Collectors.toList());
     }
 }

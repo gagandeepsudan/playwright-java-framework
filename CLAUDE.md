@@ -54,6 +54,9 @@ pom.xml
 - Locators defined as private fields using `page.locator()`
 - Methods return `void` or the next page object where appropriate
 - Assertions use native Playwright `assertThat()` — no custom wrappers
+  - Locator fields are declared private final and initialized in the constructor — never inline at declaration.
+
+
 
 ---
 
