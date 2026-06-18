@@ -11,9 +11,9 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 public class InventoryPage extends BasePage{
     private final Locator inventoryItems;
 
-    private final Locator ADD_TO_CART_BTN;
-    private final Locator cartButton;
-    private final Locator CART_ICON;
+    private final Locator addToCartBtn;
+    private final Locator cartBadge;
+    private final Locator cartIcon;
     private final Locator sortDropdown;
     private final Locator productNames;
     private final Locator productPrices;
@@ -21,9 +21,9 @@ public class InventoryPage extends BasePage{
     public InventoryPage(Page page) {
         super(page);
         this.inventoryItems= page.locator(".inventory_item");
-        this.CART_ICON=page.locator(".shopping_cart_link");
-        this.cartButton=page.locator(".shopping_cart_badge");
-        this.ADD_TO_CART_BTN= page.locator("[data-test^='add-to-cart-']").first();
+        this.cartIcon=page.locator(".shopping_cart_link");
+        this.cartBadge=page.locator(".shopping_cart_badge");
+        this.addToCartBtn= page.locator("[data-test^='add-to-cart-']").first();
         this.sortDropdown = page.locator(".product_sort_container");
         this.productNames = page.locator(".inventory_item_name");
         this.productPrices = page.locator(".inventory_item_price");
@@ -42,16 +42,17 @@ public class InventoryPage extends BasePage{
     }
 
     public void addFirstProductToCart() {
-        ADD_TO_CART_BTN.click();
+        addToCartBtn.click();
     }
 
      // ADDED — was in ProductsPage, missing from InventoryPage
     public void verifyCartBadgeCount(String expectedCount) {
-        assertThat(cartButton).hasText(expectedCount);
+
+        assertThat(cartBadge).hasText(expectedCount);
     }
 
     public void goToCart() {
-        CART_ICON.click();
+        cartIcon.click();
     }
 
     public void sortBy(String sortOption) {

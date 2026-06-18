@@ -6,14 +6,14 @@ import com.microsoft.playwright.Page;
 public class CheckoutStepTwoPage extends BasePage {
 
 
-    private final Locator FINISH_BTN;
+    private final Locator finishBtn;
 
     public CheckoutStepTwoPage(Page page) {
         super(page);
-        this.FINISH_BTN= page.locator("[data-test='finish']");
+        this.finishBtn= page.locator("[data-test='finish']");
     }
 
     public void completeOrder() {
-        FINISH_BTN.click();
+        finishBtn.click();
     }
 }
