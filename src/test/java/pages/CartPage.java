@@ -8,11 +8,11 @@ import com.microsoft.playwright.Page;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class CartPage extends BasePage {
-    private final Locator CHECKOUT_BTN ;
+    private final Locator checkoutBtn ;
 
     public CartPage(Page page){
         super(page);
-        this.CHECKOUT_BTN= page.locator("#checkout");
+        this.checkoutBtn= page.locator("#checkout");
     }
 
 
@@ -22,7 +22,7 @@ public class CartPage extends BasePage {
             .isVisible();
     }
     public void proceedToCheckout(){
-        CHECKOUT_BTN.click();
+        checkoutBtn.click();
     }
 
 }
