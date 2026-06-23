@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
 public class InventoryTest {
@@ -72,6 +73,14 @@ public class InventoryTest {
         List<Double> sorted = new ArrayList<>(prices);
         sorted.sort(Collections.reverseOrder());
         assertEquals(prices, sorted);
+    }
+
+    @Test
+    public void cartBadgeUpdatesOnTwoProducts() {
+        inventoryPage.addToCart("Sauce Labs Backpack");
+        assertThat(inventoryPage.getCartBadge()).hasText("1");
+        inventoryPage.addToCart("Sauce Labs Bike Light");
+        assertThat(inventoryPage.getCartBadge()).hasText("2");
     }
 
     @AfterMethod
