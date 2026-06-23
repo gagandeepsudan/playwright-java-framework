@@ -4,6 +4,8 @@ import com.microsoft.playwright.*;
 import org.testng.annotations.*;
 import pages.*;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 public class CheckoutFlowTest {
 
     private Playwright playwright;
@@ -55,7 +57,7 @@ public class CheckoutFlowTest {
     @Test(priority = 2, dependsOnMethods = "testSuccessfulLogin")
     public void testAddProductToCart() {
         productsPage.addFirstProductToCart();
-        productsPage.verifyCartBadgeCount("1");
+        assertThat(productsPage.getCartBadge()).hasText("1");
         productsPage.goToCart();
     }
 
