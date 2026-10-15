@@ -36,3 +36,12 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### IntelliJ (whole folder) ###
+.idea/
+
+### Playwright / TestNG output ###
+trace.zip
+test-results/
+playwright-report/
+test-output/
